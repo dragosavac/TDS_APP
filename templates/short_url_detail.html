@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+
+{% block head_title %}{{ shortenurl.parameter }}{% endblock %}
+
+{% block content %}
+<main>
+    <div class="container">
+      
+        <ul class="list-group col-5">
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+              <b>Short Url</b>
+              <span class="badge badge-dark badge-pill"><h6>{{ request.META.HTTP_HOST }}/{{ shortenurl.parameter }}</h6></span>
+            </li>
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+              <b>Link</b>
+              <span class="badge badge-dark badge-pill"><h6>{{ shortenurl.link }}</h6></span>
+            </li>
+        </ul>
+
+        <h4 class="">
+        <a href="{% url 'tds:landing-page-create' shortenurl.id %}" class="mt-4 badge badge-pill badge-primary">Add Landing Page +</a>
+        </h4>
+
+        <table class="table table-striped table-dark mt-4">
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Url</th>
+                <th scope="col">Country</th>
+                <th scope="col">Weight</th>
+                <th scope="col">Update</th>
+                <th scope="col">Delete</th>
+              </tr>
+            </thead>
+            <tbody>
+            {% for landingpage in shortenurl.redirectlink_set.all %}
+                <tr>
+                    <th scope="row">{{ forloop.counter }}</th>
+                    <td>{{ landingpage.url }}</td>
+                    <td>{{ landingpage.country.name }}</td>
+                    <td>{{ landingpage.weight }}</td>
+                    <td>
+                      <a href="{% url 'tds:landing-page-update' landingpage.parameter_id landingpage.pk %}" type="button" class="btn btn-primary btn-sm">Edit</a>
+                    </td>
+                    <td><form action="{% url 'tds:landing-page-delete' landingpage.parameter_id landingpage.pk %}" method="post" style="display: inline;">
+                      {% csrf_token %}
+                      <input type="hidden" name="landingpage_id" value="{{ landingpage.id }}"/>
+                      <button type="submit" class="btn btn-danger btn-sm">
+                          Delete
+                      </button>
+                  </form></td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan='3'>Add a landing-page</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+          </table>
+
+    </div>
+</main>
+{% endblock content %}

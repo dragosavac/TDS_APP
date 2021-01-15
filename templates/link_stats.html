@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+
+{% block head_title %}Link Statistics{% endblock %}
+
+{% block content %}
+<main>
+    <div class="container">
+        <div class="list-group col-5">
+            <li class="list-group-item list-group-item-action active">{{ request.META.HTTP_HOST }}/{{ short.parameter }}</li>
+            <li class="list-group-item list-group-item-action"><b>Link:</b></li>
+            <li class="list-group-item list-group-item-action bg-dark text-white">{{ short.link }}</li>
+            <li class="list-group-item list-group-item-action"><b>Landing page:</b></li>
+            {% for landingpage in short.redirectlink_set.all %}
+            <li class="list-group-item list-group-item-action bg-dark text-white">{{ landingpage.url }}</li>
+            {% endfor %}
+        </div>
+
+        <ul class="list-group col-4 mt-4">
+            <li class="list-group-item d-flex justify-content-between align-items-center bg-dark text-white">
+              <b>Number of clicks</b>
+            </li>
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+              Total clicks
+              <span class="badge badge-primary badge-pill">{{total_click}}</span>
+            </li>
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+              Unique clicks
+              <span class="badge badge-primary badge-pill">{{unique_click}}</span>
+            </li>
+        </ul>
+
+        <div class="mt-4">
+          <h3>Clicks distribution in last 24 Hours (in UTC)</h3>
+          <img src="/media/graph.png" />
+        </div>
+
+        <ul class="list-group col-6 mt-4">
+            <li class="list-group-item d-flex justify-content-between align-items-center bg-dark text-white">
+              <b>Number of clicks in last 24 Hours (in UTC)</b>
+              <span class="badge badge-dark badge-pill"></span><h3>{{hr24}}</h3></span>
+            </li>
+        </ul>
+
+        <h3 class="mt-4">All clicks detail:</h3>
+
+        <table class="table table-striped table-dark mt-2">
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">From IP</th>
+                <th scope="col">Landing Page URL</th>
+                <th scope="col">Time</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for user in user_click %}
+              <tr>
+                <th scope="row">{{forloop.counter}}</th>
+                <td>{{user.ip}}</td>
+                <td>{{user.url}}</td>
+                <td>{{user.time|date:'Y-m-d H:i' }} UTC</td>
+              </tr>
+                {% empty %}
+                <tr>
+                    <td colspan='3'>No one clicked yet.</td>
+                </tr>
+              {% endfor %}
+            </tr>
+            </tbody>
+          </table>
+
+    </div>
+</main>
+{% endblock content %}

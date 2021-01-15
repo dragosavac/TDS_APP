@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% block head_title %}Short Url{% endblock %}
+
+{% block content %}
+<main>
+    <div class="container d-flex justify-content-center mt-2">
+
+        <div class="col-sm-12 col-md-7 card bg-dark">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <form class="form-horizontal text-white" action="" method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        {{ form.user.as_hidden }}
+                        {{ form.parameter|as_crispy_field }}
+                        {{ form.link|as_crispy_field }}
+                        <div class="form-group">
+                            <div class="col-sm-offset-2 col-sm-10">
+                                <button type="submit" class="btn btn-primary">Submit</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</main>
+{% endblock content %}

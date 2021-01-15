@@ -1,0 +1,16 @@
+Django
+psycopg2-binary
+python-dotenv
+python-decouple
+django-crispy-forms
+django-allauth
+django_countries
+geoip2
+matplotlib
+whitenoise
+
+# dev dependecies
+black
+factory_boy
+ipython  # for better console
+
