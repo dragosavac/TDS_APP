@@ -117,8 +117,14 @@ def redirect_url(request, parameter):
             create_user(users_ip_address, shorten_url, parameter, url)
 
             return redirect(url.url)
-        
-        create_user(users_ip_address, shorten_url, parameter, shorten_url)
+
+        user = UserClickStat()
+        user.ip = users_ip_address
+        user.url_created_by = shorten_url.user
+        user.parameter = parameter
+        user.url = shorten_url.link
+        user.save()
+
         return redirect(shorten_url.link)
 
     except ObjectDoesNotExist:
